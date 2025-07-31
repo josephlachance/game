@@ -1,3 +1,6 @@
+import random
+
+
 player_stats = {
     "health": 100,
     "armor class" : 10,
@@ -5,12 +8,47 @@ player_stats = {
     "magic" : 10,
     "luck" : 5
 }
+
+def player_attack(attacker, defender):
+    print(f"\n{name} swings an attack! at Enemy")
+    roll = random.randint(1,20)
+    if roll >= defender["armor class"]:
+        print("Hit")
+    else:
+        print("Miss!")
+
+def npc_speak(name, line):
+    print("\n---" + name.upper() + "---")
+    print("> " + line + "\n")
+    input("Continue....\n")
+
+def choice_yn(prompt):
+    #Prompt means that 
+    while True:
+        answer = input(prompt + " Yes or No? ").lower()
+        if answer in ["yes","y"]:
+            return True
+        elif answer in ["no","n"]:
+            return False
+        else:
+            print("Please answer Yes or No")
+
+
+
 #Function Definitions
 def dark_knight_path():
-    print("> I am need of something you possess")
-    input("Continue...")
+    npc_speak("Dark Knight", "I am afraid I must ask something of you, brave one.")
     if  player_stats["strength"] > 10:
-        print("> You seem stronger than the rest.")
+        npc_speak("Dark Knight", "You seem stronger than the rest.")
+        if choice_yn("> Care to challenge me to a friendly game?"):
+            print("You accept the challenge")
+            print("\nThe Dark Knight laughs softly.")
+            npc_speak("Dark Knight", "I challenge you to land one hit on me. If you do you may pass. However, if you do not. You must do me a...favor.")
+        else:
+            print("You decline")
+
+    else:
+        npc_speak("Dark Knight", "I must ask you to buy another drink before leaving. Its dangerous out there in Waede. ")   
 
 def hidden_path():
     print(">inside you see some shit. You find a sword")
@@ -42,7 +80,7 @@ print("\nYou look around and see a bartender cleaning some glasses.")
 print("\nA woman is sitting alone ")
 if player_stats["luck"] == 10:
     print("\nyou see a crack of light from the wall. Perhaps some sort of hidden door.")
-choice=input("What would you like to do? ").lower()
+choice=input("\nWhat would you like to do? ").lower()
 if "lady" in choice:
     print("You walk over to the lady...")
 elif "bartender" in choice:
@@ -53,5 +91,6 @@ elif "hidden door" in choice:
     hidden_path #teehee!
 elif "exit" in choice:
     print("You turn towards the exit. However, you're blocked as a tall mysterious figure approaches the door from the outside.")
-    dark_knight_path()
     input("\nContinue...")
+    dark_knight_path()
+

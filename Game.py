@@ -1,26 +1,38 @@
 import random
 
+valid_signs=["sun", "moon", "star"] #usable signs
 
-player_stats = {
-    "health": 100,
-    "armor class" : 10,
-    "strength" : 10,
-    "magic" : 10,
-    "luck" : 5
-}
 
-def player_attack(attacker, defender):
-    print(f"\n{name} swings an attack! at Enemy")
-    roll = random.randint(1,20)
-    if roll >= defender["armor class"]:
-        print("Hit")
-    else:
-        print("Miss!")
+class Player:
+    def __init__(self, name, sign):
+        self.name = name
+        self.level = 1
+        self.health = 100
+        self.armor_class = 10
+        self.strength = 10 
+        self.magic = 10
+        self.luck = 5
+        self.sign = sign
+        self.inventory = []
+        self.apply_sign_bonus()
+        self.exp = 0
+    def apply_sign_bonus(self):
+        if self.sign == "sun":
+            self.strength += 5
+        elif self.sign == "moon":
+            self.magic += 5
+        elif self.sign == "star":
+            self.luck += 5
 
-def npc_speak(name, line):
-    print("\n---" + name.upper() + "---")
-    print("> " + line + "\n")
-    input("Continue....\n")
+class Scene:
+    def __init__(self, description, choices):
+        self.description = description
+        self.choices = choices
+    def enter(self):
+        print("\nEnd of this path.")
+        return None
+    def
+
 
 def choice_yn(prompt):
     #Prompt means that 
@@ -38,7 +50,7 @@ def choice_yn(prompt):
 #Function Definitions
 def dark_knight_path():
     npc_speak("Dark Knight", "I am afraid I must ask something of you, brave one.")
-    if  player_stats["strength"] > 10:
+    if  player.strength > 10:
         npc_speak("Dark Knight", "You seem stronger than the rest.")
         if choice_yn("> Care to challenge me to a friendly game?"):
             print("You accept the challenge")
@@ -62,35 +74,41 @@ print("First thing is first... ")
 name=input('What is your name? ')
 print(f"Hello {name}. Your adventure will begin soon. But I have a few more questions for you.")
 print("\nWhat is your sign. You may only choose from the following: Sun, Moon, Star")
-valid_signs=["sun", "moon", "star"] #usable signs
 sign=input("Please enter your chosen sign ").lower()
 while sign not in valid_signs: #This will determine the players stats once they choose their sign.
     print("Im sorry that is not a valid sign, please type a valid sign from the list. Sun, Moon, or Star ")
     sign=input("Please enter your chosen sign ")
-print(f"Thank you, you have chosen {sign}")
-if sign == "moon":
-    player_stats["luck"] += 5
-elif sign == "sun":
-    player_stats["strength"] += 5
-elif sign == "star":
-    player_stats["magic"] += 5
+print(f"Thank you, you have chosen {sign.capitalize()}")
 input("\nContinue... ")
-print("You begin your journey in a tavern.")
-print("\nYou look around and see a bartender cleaning some glasses.")
-print("\nA woman is sitting alone ")
-if player_stats["luck"] == 10:
+
+player = Player(name, sign)
+scene = Scene(description, choices)
+
+
+scene.description("You've awaken in a tavern. You dont remember how you got here but you've got a splitting headache."
+                  )
+
+if player.luck == 10:
     print("\nyou see a crack of light from the wall. Perhaps some sort of hidden door.")
-choice=input("\nWhat would you like to do? ").lower()
-if "lady" in choice:
-    print("You walk over to the lady...")
-elif "bartender" in choice:
-    print("The bartender looks at you and asks you what will you have?")
-    bartender_path #create a bartender path
-elif "hidden door" in choice:
-    print("You manage to walk over to the wall and get close to the door. You give it a push and the door opens.")
-    hidden_path #teehee!
-elif "exit" in choice:
-    print("You turn towards the exit. However, you're blocked as a tall mysterious figure approaches the door from the outside.")
-    input("\nContinue...")
-    dark_knight_path()
+while True:
+    choice=input("\nWhat would you like to do? (Bartender, Woman, Exit) ").lower()
+    if "lady" in choice or "woman" in choice:
+        print("You walk over to the lady...")
+        input("\nContinue...")
+        break
+    elif "bartender" in choice:
+        print("The bartender looks at you and asks you what will you have?")
+        break
+    #create a bartender path
+    elif "hidden door" in choice:
+        print("You manage to walk over to the wall and get close to the door. You give it a push and the door opens.")
+        hidden_path #teehee!
+        break
+    elif "exit" in choice:
+        print("You turn towards the exit. However, you're blocked as a tall mysterious figure approaches the door from the outside.")
+        input("\nContinue...")
+        dark_knight_path()
+        break
+    else:
+        print("Please choose a valid choice!")
 
